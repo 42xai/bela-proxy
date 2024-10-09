@@ -1,0 +1,25 @@
+{
+  "name": "bela-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/42xai/bela-proxy.git"
+  },
+  "author": "42x",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/42xai/bela-proxy/issues"
+  },
+  "homepage": "https://github.com/42xai/bela-proxy#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "pg": "^8.13.0",
+    "sequelize": "^6.37.4"
+  }
+}
