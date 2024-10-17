@@ -7,6 +7,7 @@ import {
   DATABASE_NAME,
   DATABASE_DRIVER,
 } from "../config.js";
+import { logger } from "./logger.js";
 
 /**
  * @typedef {Object} Success
@@ -35,6 +36,9 @@ export async function query(sql) {
       dialectOptions: {
         requestTimeout: 120 * 1000,
         connectTimeout: 10 * 1000,
+      },
+      logging: (sql) => {
+        logger.info(sql);
       },
     }
   );

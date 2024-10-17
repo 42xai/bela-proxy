@@ -5,12 +5,14 @@ import fs from "fs";
 import { PORT, TLS_KEY_PATH, TLS_CERT_PATH } from "./config.js";
 import { validateSignature } from "./middleware/auth.js";
 import { query } from "./lib/db.query.js";
+import { logger, logRequests } from "./lib/logger.js";
 
 // Define a new Express application
 const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(logRequests);
 
 /**
  * Handles the GET request for the root route.
@@ -29,8 +31,10 @@ app.get("/", (req, res) => {
 app.post("/query", validateSignature, async (req, res) => {
   const { data, error } = await query(req.body.sql);
   if (error) {
+    logger.error(error);
     return res.status(400).json({ error });
   }
+  logger.info(`Response OK. ${data.length} records.`);
   res.status(200).json(data);
 });
 
@@ -46,11 +50,11 @@ const startServer = () => {
       cert: fs.readFileSync(TLS_CERT_PATH),
     };
     https.createServer(options, app).listen(PORT, () => {
-      console.log(startMessage);
+      logger.info(startMessage);
     });
   } else {
     app.listen(PORT, () => {
-      console.log(startMessage);
+      logger.info(startMessage);
     });
   }
 };
